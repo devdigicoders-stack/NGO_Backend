@@ -20,12 +20,29 @@ ensureUploadDirs();
 const app = express();
 
 // ── 1. Security / CORS ──────────────────────────────────────
+const allowedOrigins = [
+  'https://ngo-admin-panel-nine.vercel.app',
+  'https://ngo-website-drab-three.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'http://localhost:5176',
+  ...CORS_ORIGINS,
+];
+
 app.use(cors({
-  origin:         CORS_ORIGINS,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS blocked: ${origin}`));
+    }
+  },
   methods:        ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials:    true,   // required for cross-origin cookies
+  credentials:    true,
 }));
+app.options('*', cors());
 
 // ── 1b. Cookie parser (for HTTPOnly session tokens) ──────────
 app.use(cookieParser());
