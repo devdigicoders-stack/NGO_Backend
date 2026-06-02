@@ -15,6 +15,14 @@ const cookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
 };
 
+// Helper to format admin data (remove sensitive fields)
+const formatAdmin = (admin, includeToken = null) => {
+  const obj = admin.toObject ? admin.toObject() : admin;
+  delete obj.password;
+  if (includeToken) obj.token = includeToken;
+  return obj;
+};
+
 const authController = {
   // POST /api/auth/login
   async login(req, res) {
@@ -40,8 +48,8 @@ const authController = {
       // Set cookie (local dev)
       res.cookie('admin_token', token, cookieOptions);
 
-      // Also send token in response for cross-origin (production)
-      return sendSuccess(res, { ...admin.toObject(), token }, 'Logged in successfully');
+      // Send token + admin data (without password) for cross-origin (production)
+      return sendSuccess(res, formatAdmin(admin, token), 'Logged in successfully');
     } catch (err) {
       console.error('Login error:', err);
       return sendError(res, 'Failed to log in', 500);
@@ -66,7 +74,7 @@ const authController = {
   // GET /api/auth/profile
   async getProfile(req, res) {
     try {
-      return sendSuccess(res, req.admin, 'Profile fetched successfully');
+      return sendSuccess(res, formatAdmin(req.admin), 'Profile fetched successfully');
     } catch (err) {
       console.error('Profile fetch error:', err);
       return sendError(res, 'Failed to fetch profile', 500);
@@ -96,7 +104,7 @@ const authController = {
       admin.updatedAt = new Date();
       await admin.save();
 
-      return sendSuccess(res, admin, 'Profile updated successfully');
+      return sendSuccess(res, formatAdmin(admin), 'Profile updated successfully');
     } catch (err) {
       console.error('Update profile error:', err);
       return sendError(res, 'Failed to update profile', 500);
@@ -132,7 +140,7 @@ const authController = {
       admin.updatedAt = new Date();
       await admin.save();
 
-      const data = admin.toJSON ? admin.toJSON() : admin;
+      const data = formatAdmin(admin);
       data.avatarFullUrl = `${SERVER_URL}${result.url}`;
 
       return sendSuccess(res, data, 'Profile photo updated successfully');
@@ -155,7 +163,7 @@ const authController = {
       admin.updatedAt = new Date();
       await admin.save();
 
-      return sendSuccess(res, admin, 'Preferences updated successfully');
+      return sendSuccess(res, formatAdmin(admin), 'Preferences updated successfully');
     } catch (err) {
       console.error('Update preferences error:', err);
       return sendError(res, 'Failed to update preferences', 500);
