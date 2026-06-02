@@ -1,0 +1,37 @@
+{
+  "heroSubtitle": "✍️ आपका दान किसी की जिंदगी बदल सकता है",
+  "heroTitle": "दान करें",
+  "upiId": "raw66010-1@okicici",
+  "upiPayeeName": "Sahayata Foundation",
+  "presetAmounts": [100, 500, 1000, 2500, 5000, 10000],
+  "causes": [
+    { "id": "education", "label": "शिक्षा सहायता", "icon": "📚" },
+    { "id": "health", "label": "स्वास्थ्य सेवा", "icon": "🏥" },
+    { "id": "food", "label": "पौष्टिक भोजन", "icon": "🍱" },
+    { "id": "women", "label": "महिला सशक्तिकरण", "icon": "👩" },
+    { "id": "general", "label": "सामान्य दान", "icon": "💚" }
+  ],
+  "trustBadges": [
+    { "text": "100% सुरक्षित भुगतान", "icon": "shield" },
+    { "text": "80G कर-मुक्ति प्रमाणित", "icon": "award" },
+    { "text": "50,000+ लाभार्थी", "icon": "users" }
+  ],
+  "impactItems": [
+    { "amountLabel": "₹100", "impact": "1 बच्चे को 1 महीने की स्टेशनरी" },
+    { "amountLabel": "₹500", "impact": "1 परिवार को 1 सप्ताह का भोजन" },
+    { "amountLabel": "₹1,000", "impact": "1 बच्चे की 1 महीने की शिक्षा" },
+    { "amountLabel": "₹5,000", "impact": "5 बच्चों का स्वास्थ्य परीक्षण" }
+  ],
+  "taxExemptTitle": "80G कर-मुक्ति",
+  "taxExemptDescription": "आपका दान आयकर अधिनियम की धारा 80G के तहत कर-मुक्त है। दान के बाद 80G प्रमाण पत्र ईमेल पर भेजा जाएगा।",
+  "paymentSteps": [
+    "अपने UPI ऐप (PhonePe, GPay, Paytm) खोलें",
+    "QR कोड स्कैन करें या UPI ID दर्ज करें",
+    "राशि confirm करें",
+    "भुगतान पूरा करें — रसीद ईमेल पर मिलेगी"
+  ],
+  "formStepBadge": "दान राशि चुनें",
+  "formStepTitle": "आप कितना दान करना चाहते हैं?",
+  "trustPanelTitle": "आपका दान सुरक्षित है",
+  "impactPanelTitle": "आपके दान का प्रभाव"
+}

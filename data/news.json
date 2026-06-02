@@ -1,0 +1,93 @@
+{
+  "blogSectionSubtitle": "ज़रूरतमंदों को दान देना शुरू करें",
+  "blogSectionTitlePrefix": "हमारे नवीनतम ",
+  "blogSectionTitleHighlight": "समाचार",
+  "blogSectionTitleSuffix": " और प्रेरणादायक लेख",
+  "blogSectionCtaText": "सभी लेख देखें",
+  "homeDisplayLimit": 3,
+  "newsPageHeroTitle": "ताज़ा समाचार",
+  "newsPageHeroSubtitle": "✍️ जरूरतमंदों की सेवा में समर्पित",
+  "articles": [
+    {
+      "title": "500 बच्चों को मिली मुफ्त स्कूल किट — सहायता फाउंडेशन की नई पहल",
+      "excerpt": "इस वर्ष हमारी संस्था ने झारखंड और राजस्थान के दूरदराज़ गाँवों में 500 से अधिक बच्चों को पूरी तरह मुफ्त स्कूल किट वितरित की, जिसमें किताबें, वर्दी, बस्ता और स्टेशनरी शामिल हैं।",
+      "category": "शिक्षा",
+      "categoryEn": "Education",
+      "dateLabel": "25 मई 2026",
+      "image": "/images/about_child1.png",
+      "tag": "ताज़ा",
+      "featured": true,
+      "showOnHome": true,
+      "commentCount": 3,
+      "author": "रॉबर्ट फॉक्स",
+      "isActive": true
+    },
+    {
+      "title": "मुफ्त स्वास्थ्य शिविर — 1200 बच्चों की हुई स्वास्थ्य जांच",
+      "excerpt": "ग्रामीण क्षेत्रों में चलाए गए हमारे विशेष स्वास्थ्य शिविर में 1200 से अधिक बच्चों की नि:शुल्क स्वास्थ्य जांच की गई।",
+      "category": "स्वास्थ्य",
+      "categoryEn": "Health",
+      "dateLabel": "18 मई 2026",
+      "image": "/images/hero.png",
+      "tag": "महत्वपूर्ण",
+      "featured": false,
+      "showOnHome": true,
+      "commentCount": 8,
+      "author": "रॉबर्ट फॉक्स",
+      "isActive": true
+    },
+    {
+      "title": "महिलाओं के लिए कौशल विकास कार्यक्रम — 300 महिलाओं को मिला प्रशिक्षण",
+      "excerpt": "सहायता फाउंडेशन के नए कौशल विकास कार्यक्रम के अंतर्गत 300 ग्रामीण महिलाओं को सिलाई, कढ़ाई और डिजिटल साक्षरता का प्रशिक्षण दिया गया।",
+      "category": "महिला सशक्तिकरण",
+      "categoryEn": "Women Empowerment",
+      "dateLabel": "10 मई 2026",
+      "image": "/images/about_child2.png",
+      "tag": "नया",
+      "featured": false,
+      "showOnHome": true,
+      "commentCount": 13,
+      "author": "रॉबर्ट फॉक्स",
+      "isActive": true
+    },
+    {
+      "title": "कॉर्पोरेट CSR: TechIndia Ltd. ने दिए ₹50 लाख — 1000 बच्चों की पढ़ाई सुनिश्चित",
+      "excerpt": "TechIndia Ltd. के CSR कार्यक्रम के तहत ₹50 लाख की राशि का योगदान प्राप्त हुआ।",
+      "category": "दान",
+      "categoryEn": "Donation",
+      "dateLabel": "2 मई 2026",
+      "image": "/images/donation_children.png",
+      "tag": "बड़ी खबर",
+      "featured": false,
+      "showOnHome": false,
+      "commentCount": 5,
+      "isActive": true
+    },
+    {
+      "title": "वार्षिक धन-संग्रह महोत्सव — 15 जून 2026 को होगा आयोजन",
+      "excerpt": "इस वर्ष का वार्षिक धन-संग्रह महोत्सव 15 जून 2026 को नई दिल्ली में आयोजित किया जाएगा।",
+      "category": "आगामी कार्यक्रम",
+      "categoryEn": "Upcoming Events",
+      "dateLabel": "15 जून 2026",
+      "image": "/images/hero1.png",
+      "tag": "आगामी",
+      "featured": false,
+      "showOnHome": false,
+      "commentCount": 2,
+      "isActive": true
+    },
+    {
+      "title": "200 युवा स्वयंसेवक जुड़े सहायता फाउंडेशन से — बने बदलाव के दूत",
+      "excerpt": "इस महीने 200 नए युवा स्वयंसेवकों ने संस्था से जुड़कर देश भर के विभिन्न प्रोजेक्ट्स में सक्रिय योगदान देना शुरू किया।",
+      "category": "स्वयंसेवा",
+      "categoryEn": "Volunteering",
+      "dateLabel": "28 अप्रैल 2026",
+      "image": "/images/volunteer_child.png",
+      "tag": "उत्साहजनक",
+      "featured": false,
+      "showOnHome": false,
+      "commentCount": 6,
+      "isActive": true
+    }
+  ]
+}

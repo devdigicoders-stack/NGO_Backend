@@ -1,0 +1,46 @@
+{
+  "sectionSubtitle": "ज़रूरतमंदों को दान देना शुरू करें",
+  "sectionTitle": "हमारे समर्पित स्वयंसेवक दल से मिलें",
+  "members": [
+    {
+      "name": "माइकल फोक्लुज़",
+      "designation": "स्वयंसेवक",
+      "image": "/images/team1.png",
+      "facebook": "#",
+      "twitter": "#",
+      "instagram": "#",
+      "other": "#",
+      "isActive": true
+    },
+    {
+      "name": "एरियन ड्रोब्लोआस",
+      "designation": "स्वयंसेवक",
+      "image": "/images/team2.png",
+      "facebook": "#",
+      "twitter": "#",
+      "instagram": "#",
+      "other": "#",
+      "isActive": true
+    },
+    {
+      "name": "जारा क्लिंटॉफ़",
+      "designation": "स्वयंसेवक",
+      "image": "/images/team3.png",
+      "facebook": "#",
+      "twitter": "#",
+      "instagram": "#",
+      "other": "#",
+      "isActive": true
+    },
+    {
+      "name": "एडेन मार्कराम",
+      "designation": "स्वयंसेवक",
+      "image": "/images/team4.png",
+      "facebook": "#",
+      "twitter": "#",
+      "instagram": "#",
+      "other": "#",
+      "isActive": true
+    }
+  ]
+}
