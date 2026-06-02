@@ -37,10 +37,11 @@ const authController = {
       // Generate JWT
       const token = jwt.sign({ id: admin._id }, JWT_SECRET, { expiresIn: '7d' });
 
-      // Set cookie
+      // Set cookie (local dev)
       res.cookie('admin_token', token, cookieOptions);
 
-      return sendSuccess(res, admin, 'Logged in successfully');
+      // Also send token in response for cross-origin (production)
+      return sendSuccess(res, { ...admin.toObject(), token }, 'Logged in successfully');
     } catch (err) {
       console.error('Login error:', err);
       return sendError(res, 'Failed to log in', 500);

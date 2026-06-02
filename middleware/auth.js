@@ -8,8 +8,13 @@ const protect = async (req, res, next) => {
   try {
     let token = null;
 
-    // Retrieve token from cookies
-    if (req.cookies && req.cookies.admin_token) {
+    // Check Authorization header first (Bearer token)
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+
+    // Fallback to cookie
+    if (!token && req.cookies && req.cookies.admin_token) {
       token = req.cookies.admin_token;
     }
 
