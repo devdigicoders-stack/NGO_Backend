@@ -10,14 +10,10 @@ const config = {
   PORT: process.env.PORT || 5000,
   NODE_ENV: process.env.NODE_ENV || 'development',
 
-  // CORS — allowed frontend origins
-  CORS_ORIGINS: [
-    'http://localhost:5173',  // Vite website dev
-    'http://localhost:5174',  // Vite admin panel dev
-    'http://localhost:5175',  // Vite admin panel alt dev
-    'http://localhost:5176',  // Vite admin panel alt dev
-    'http://localhost:3000',  // Optional React dev
-  ],
+  // CORS — allowed frontend origins (from .env, comma-separated)
+  CORS_ORIGINS: process.env.CORS_ORIGINS
+    ? process.env.CORS_ORIGINS.split(',')
+    : ['http://localhost:5173', 'http://localhost:5174'],
 
   // Data directory (JSON file storage)
   DATA_DIR: path.join(__dirname, '..', 'data'),

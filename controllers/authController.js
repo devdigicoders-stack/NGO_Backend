@@ -11,7 +11,7 @@ const { SERVER_URL } = require('../config');
 const cookieOptions = {
   httpOnly: true,
   secure: NODE_ENV === 'production',
-  sameSite: 'lax',
+  sameSite: NODE_ENV === 'production' ? 'none' : 'lax',
   maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
 };
 
@@ -53,7 +53,7 @@ const authController = {
       res.clearCookie('admin_token', {
         httpOnly: true,
         secure: NODE_ENV === 'production',
-        sameSite: 'lax'
+        sameSite: NODE_ENV === 'production' ? 'none' : 'lax'
       });
       return sendSuccess(res, null, 'Logged out successfully');
     } catch (err) {
