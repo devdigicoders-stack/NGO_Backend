@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const UPLOAD_ROOT = path.join(__dirname, '..', 'uploads');
 
-const UPLOAD_CATEGORIES = ['team', 'programs', 'profiles', 'testimonials', 'news', 'general'];
+const UPLOAD_CATEGORIES = ['team', 'programs', 'profiles', 'testimonials', 'news', 'general', 'registrations', 'donations'];
 
 const ALLOWED_MIME_TYPES = new Set([
   'image/jpeg',

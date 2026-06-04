@@ -14,6 +14,7 @@ const DonationSchema = new mongoose.Schema({
   status: { type: String, enum: STATUSES, default: 'pending' },
   adminNotes: { type: String, default: '' },
   paymentMethod: { type: String, default: 'upi', trim: true },
+  screenshotUrl: { type: String, default: '' },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 }, {

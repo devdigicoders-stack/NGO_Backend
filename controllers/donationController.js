@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 const Donation = require('../models/Donation');
 const DonationSettings = require('../models/DonationSettings');
 const { sendSuccess, sendError } = require('../utils/apiResponse');
+const { saveImageBuffer } = require('../utils/uploadService');
 
 const donationController = {
   async getSettings(req, res) {
@@ -40,6 +41,40 @@ const donationController = {
     } catch (err) {
       console.error(err);
       return sendError(res, 'Failed to submit donation', 500);
+    }
+  },
+
+  async uploadScreenshot(req, res) {
+    try {
+      const donationId = req.params.id;
+      if (!donationId) {
+        return sendError(res, 'Donation ID is required', 400);
+      }
+
+      const donation = await Donation.findById(donationId);
+      if (!donation) {
+        return sendError(res, 'Donation not found', 404);
+      }
+
+      if (!req.file) {
+        return sendError(res, 'Screenshot file is required', 400);
+      }
+
+      const result = saveImageBuffer({
+        buffer: req.file.buffer,
+        category: 'donations',
+        originalName: req.file.originalname || 'screenshot.jpg',
+        mimeType: req.file.mimetype,
+      });
+
+      donation.screenshotUrl = result.url;
+      donation.updatedAt = new Date();
+      await donation.save();
+
+      return sendSuccess(res, donation, 'Screenshot uploaded successfully');
+    } catch (err) {
+      console.error(err);
+      return sendError(res, err.message || 'Screenshot upload failed', 500);
     }
   },
 
@@ -102,6 +137,24 @@ const donationController = {
     }
   },
 
+  async lookupPublic(req, res) {
+    try {
+      const searchId = req.query.id?.trim() || '';
+      if (!searchId) {
+        return sendError(res, 'कृपया रेफरेंस ID दर्ज करें।', 400);
+      }
+      const re = new RegExp(`^${searchId}$`, 'i');
+      const item = await Donation.findOne({ _id: re });
+      if (!item) {
+        return sendError(res, 'रेफरेंस ID नहीं मिला। कृपया सही ID दर्ज करें।', 404);
+      }
+      return sendSuccess(res, item, 'Donation found successfully');
+    } catch (err) {
+      console.error(err);
+      return sendError(res, 'सर्च करने में त्रुटि हुई।', 500);
+    }
+  },
+
   async remove(req, res) {
     try {
       const deleted = await Donation.deleteDonation(req.params.id);
@@ -117,3 +170,4 @@ const donationController = {
 };
 
 module.exports = donationController;
+
