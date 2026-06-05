@@ -24,5 +24,8 @@ router.get('/lookup', (req, res, next) => {
   return registrationController.getByNumber(req, res, next);
 });
 
+// PATCH /api/registrations/:id/status - Admin update status/role
+router.patch('/:id/status', protect, registrationController.updateStatus);
+
 module.exports = router;
 

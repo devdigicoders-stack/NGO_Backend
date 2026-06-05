@@ -127,6 +127,38 @@ const registrationController = {
       console.error('Error fetching registrations:', err);
       return sendError(res, 'Failed to fetch registrations', 500);
     }
+  },
+
+  // PATCH /api/registrations/:id/status (admin only)
+  async updateStatus(req, res) {
+    try {
+      const { id } = req.params;
+      const { status, role } = req.body;
+
+      if (!status) {
+        return sendError(res, 'Status is required', 400);
+      }
+
+      const updateData = { status };
+      if (role) {
+        updateData.role = role;
+      }
+
+      const updatedRegistration = await Registration.findByIdAndUpdate(
+        id,
+        updateData,
+        { new: true }
+      );
+
+      if (!updatedRegistration) {
+        return sendError(res, 'Registration not found', 404);
+      }
+
+      return sendSuccess(res, updatedRegistration, 'Status updated successfully');
+    } catch (err) {
+      console.error('Error updating registration status:', err);
+      return sendError(res, 'Failed to update registration status', 500);
+    }
   }
 };
 
