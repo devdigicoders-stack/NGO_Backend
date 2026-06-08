@@ -7,6 +7,10 @@ const RegistrationSchema = new mongoose.Schema({
   formData: { type: mongoose.Schema.Types.Mixed, required: true },
   status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
   role: { type: String, default: 'सदस्य' },
+  screenshotUrl: { type: String, default: '' },
+  amount: { type: Number, default: 0 },
+  validFrom: { type: String, default: '' },
+  validUntil: { type: String, default: '' },
   createdAt: { type: Date, default: Date.now }
 }, {
   toJSON: {

@@ -91,6 +91,42 @@ const registrationController = {
 
   },
 
+  async uploadScreenshot(req, res) {
+    try {
+      const regNumber = req.params.regNumber;
+      if (!regNumber) {
+        return sendError(res, 'Registration Number is required', 400);
+      }
+
+      const registration = await Registration.findOne({ regNumber });
+      if (!registration) {
+        return sendError(res, 'Registration not found', 404);
+      }
+
+      if (!req.file) {
+        return sendError(res, 'Screenshot file is required', 400);
+      }
+
+      const result = saveImageBuffer({
+        buffer: req.file.buffer,
+        category: 'registrations',
+        originalName: req.file.originalname || 'screenshot.jpg',
+        mimeType: req.file.mimetype,
+      });
+
+      registration.screenshotUrl = result.url;
+      if (req.body.amount) {
+        registration.amount = Number(req.body.amount) || 0;
+      }
+      await registration.save();
+
+      return sendSuccess(res, registration, 'Screenshot uploaded successfully');
+    } catch (err) {
+      console.error('Screenshot upload error:', err);
+      return sendError(res, err.message || 'Screenshot upload failed', 500);
+    }
+  },
+
   // GET /api/registrations/:regNumber (or via query param /api/registrations?regNumber=...)
   async getByNumber(req, res) {
     try {
@@ -133,7 +169,7 @@ const registrationController = {
   async updateStatus(req, res) {
     try {
       const { id } = req.params;
-      const { status, role } = req.body;
+      const { status, role, validFrom, validUntil } = req.body;
 
       if (!status) {
         return sendError(res, 'Status is required', 400);
@@ -142,6 +178,12 @@ const registrationController = {
       const updateData = { status };
       if (role) {
         updateData.role = role;
+      }
+      if (validFrom) {
+        updateData.validFrom = validFrom;
+      }
+      if (validUntil) {
+        updateData.validUntil = validUntil;
       }
 
       const updatedRegistration = await Registration.findByIdAndUpdate(

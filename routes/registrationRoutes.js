@@ -3,9 +3,13 @@ const express = require('express');
 const router = express.Router();
 const registrationController = require('../controllers/registrationController');
 const { protect } = require('../middleware/auth');
+const { handleMulterUpload } = require('../middleware/multerUpload');
 
 // POST /api/registrations - Create registration
 router.post('/', registrationController.create);
+
+// POST /api/registrations/:regNumber/screenshot - Upload screenshot
+router.post('/:regNumber/screenshot', handleMulterUpload, registrationController.uploadScreenshot);
 
 // GET /api/registrations?regNumber=... - Public lookup by query param
 // GET /api/registrations - Protected list of all (no query param)

@@ -438,9 +438,9 @@ const createDonationRules = [
     .isLength({ max: 150 }),
 
   body('email')
+    .optional({ checkFalsy: true })
     .trim()
-    .notEmpty().withMessage('Email is required')
-    .isEmail(),
+    .isEmail().withMessage('Valid email is required'),
 
   body('phone')
     .optional({ checkFalsy: true })

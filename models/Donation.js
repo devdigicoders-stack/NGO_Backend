@@ -9,7 +9,7 @@ const DonationSchema = new mongoose.Schema({
   causeId: { type: String, default: 'general', trim: true },
   causeLabel: { type: String, default: '', trim: true },
   name: { type: String, required: true, trim: true },
-  email: { type: String, required: true, trim: true, lowercase: true },
+  email: { type: String, default: '', trim: true, lowercase: true },
   phone: { type: String, default: '', trim: true },
   status: { type: String, enum: STATUSES, default: 'pending' },
   adminNotes: { type: String, default: '' },
