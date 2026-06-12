@@ -31,5 +31,11 @@ router.get('/lookup', (req, res, next) => {
 // PATCH /api/registrations/:id/status - Admin update status/role
 router.patch('/:id/status', protect, registrationController.updateStatus);
 
+// PUT /api/registrations/:id - Admin update registration
+router.put('/:id', protect, registrationController.update);
+
+// DELETE /api/registrations/:id - Admin delete registration
+router.delete('/:id', protect, registrationController.delete);
+
 module.exports = router;
 

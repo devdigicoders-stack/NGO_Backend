@@ -201,6 +201,63 @@ const registrationController = {
       console.error('Error updating registration status:', err);
       return sendError(res, 'Failed to update registration status', 500);
     }
+  },
+
+  // PUT /api/registrations/:id (admin only)
+  async update(req, res) {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+
+      // Check if photo is base64 and save it to filesystem
+      if (updateData.formData && updateData.formData.photo && updateData.formData.photo.startsWith('data:image/')) {
+        try {
+          const { buffer, mimeType } = parseBase64Input(updateData.formData.photo);
+          const result = saveImageBuffer({
+            buffer,
+            category: 'registrations',
+            originalName: 'photo.jpg',
+            mimeType
+          });
+          updateData.formData.photo = result.url; // Replace base64 with public URL path
+        } catch (uploadErr) {
+          console.error('Error saving base64 registration photo:', uploadErr);
+          return sendError(res, 'Failed to upload photo: ' + uploadErr.message, 400);
+        }
+      }
+
+      const updatedRegistration = await Registration.findByIdAndUpdate(
+        id,
+        updateData,
+        { new: true }
+      );
+
+      if (!updatedRegistration) {
+        return sendError(res, 'Registration not found', 404);
+      }
+
+      return sendSuccess(res, updatedRegistration, 'Registration updated successfully');
+    } catch (err) {
+      console.error('Error updating registration:', err);
+      return sendError(res, 'Failed to update registration', 500);
+    }
+  },
+
+  // DELETE /api/registrations/:id (admin only)
+  async delete(req, res) {
+    try {
+      const { id } = req.params;
+      const deletedRegistration = await Registration.findByIdAndDelete(id);
+
+      if (!deletedRegistration) {
+        return sendError(res, 'Registration not found', 404);
+      }
+
+      return sendSuccess(res, null, 'Registration deleted successfully');
+    } catch (err) {
+      console.error('Error deleting registration:', err);
+      return sendError(res, 'Failed to delete registration', 500);
+    }
   }
 };
 
