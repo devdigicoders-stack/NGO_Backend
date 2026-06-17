@@ -6,9 +6,9 @@
 /**
  * Send a success response.
  * @param {Response} res
- * @param {*}        data     Payload
- * @param {string}   message  Human-readable message
- * @param {number}   status   HTTP status code (default 200)
+ * @param {*} data     Payload
+ * @param {string} message  Human-readable message
+ * @param {number} status   HTTP status code (default 200)
  */
 const sendSuccess = (res, data, message = 'Success', status = 200) => {
   return res.status(status).json({
@@ -26,7 +26,7 @@ const sendSuccess = (res, data, message = 'Success', status = 200) => {
  * @param {number}   status   HTTP status code (default 500)
  * @param {*}        errors   Optional validation errors array
  */
-const sendError = (res, message = 'Internal Server Error', status = 500, errors = null) => {
+const sendError = (res, message ='Internal Server Error', status = 500, errors = null) => {
   const body = {
     success: false,
     message,
