@@ -23,6 +23,10 @@ const app = express();
 const allowedOrigins = [
   'https://ngo-admin-panel-nine.vercel.app',
   'https://ngo-website-drab-three.vercel.app',
+  'https://sadhulaxmi.com',
+  'https://www.sadhulaxmi.com',
+  'http://sadhulaxmi.com',
+  'http://www.sadhulaxmi.com',
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:5175',
