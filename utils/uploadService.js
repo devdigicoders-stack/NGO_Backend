@@ -51,43 +51,67 @@ function buildFilename(category, mimeType, originalName) {
 
 const cloudinary = require('cloudinary').v2;
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+let cloudinaryConfigured = false;
+if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY) {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+  cloudinaryConfigured = true;
+}
 
 /**
- * Save image buffer to Cloudinary
+ * Save image buffer locally and optionally to Cloudinary
  * @returns {Promise<{ url: string, path: string, filename: string, category: string }>}
  */
-function saveImageBuffer({ buffer, category = 'general', originalName = 'image.jpg', mimeType }) {
-  return new Promise((resolve, reject) => {
+async function saveImageBuffer({ buffer, category = 'general', originalName = 'image.jpg', mimeType }) {
+  const safeCategory = normalizeCategory(category);
+  const detectedMime = validateBuffer(buffer, mimeType);
+  const filename = buildFilename(safeCategory, detectedMime, originalName);
+  
+  // 1. Save locally first
+  const categoryDir = path.join(UPLOAD_ROOT, safeCategory);
+  if (!fs.existsSync(categoryDir)) {
+    fs.mkdirSync(categoryDir, { recursive: true });
+  }
+  const localFilePath = path.join(categoryDir, filename);
+  const localUrl = `${PUBLIC_UPLOAD_PATH}/${safeCategory}/${filename}`;
+  
+  fs.writeFileSync(localFilePath, buffer);
+
+  // 2. Try Cloudinary if configured
+  if (cloudinaryConfigured) {
     try {
-      const safeCategory = normalizeCategory(category);
-      validateBuffer(buffer, mimeType);
-      
-      const stream = cloudinary.uploader.upload_stream(
-        { folder: `ngo/${safeCategory}` },
-        (error, result) => {
-          if (error) {
-            console.error('Cloudinary Upload Error:', error);
-            return reject(error);
+      const result = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: `ngo/${safeCategory}` },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
           }
-          resolve({ 
-            url: result.secure_url, 
-            path: result.secure_url, 
-            filename: result.public_id, 
-            category: safeCategory 
-          });
-        }
-      );
+        );
+        stream.end(buffer);
+      });
       
-      stream.end(buffer);
+      return {
+        url: result.secure_url,
+        path: result.secure_url,
+        filename: result.public_id,
+        category: safeCategory
+      };
     } catch (err) {
-      reject(err);
+      console.error('Cloudinary upload failed, falling back to local storage:', err.message);
     }
-  });
+  }
+
+  // 3. Fallback to local URL
+  return {
+    url: localUrl,
+    path: localUrl,
+    filename: filename,
+    category: safeCategory
+  };
 }
 
 function parseBase64Input(base64Data) {
