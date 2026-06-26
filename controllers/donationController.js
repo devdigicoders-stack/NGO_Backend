@@ -60,7 +60,7 @@ const donationController = {
         return sendError(res, 'Screenshot file is required', 400);
       }
 
-      const result = saveImageBuffer({
+      const result = await saveImageBuffer({
         buffer: req.file.buffer,
         category: 'donations',
         originalName: req.file.originalname || 'screenshot.jpg',

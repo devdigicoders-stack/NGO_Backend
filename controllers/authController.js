@@ -117,7 +117,7 @@ const authController = {
       let result;
 
       if (req.file) {
-        result = saveImageBuffer({
+        result = await saveImageBuffer({
           buffer: req.file.buffer,
           category: 'profiles',
           originalName: req.file.originalname,
@@ -125,7 +125,7 @@ const authController = {
         });
       } else if (req.body.base64Data) {
         const { buffer, mimeType } = parseBase64Input(req.body.base64Data);
-        result = saveImageBuffer({
+        result = await saveImageBuffer({
           buffer,
           category: 'profiles',
           originalName: req.body.filename || 'avatar.jpg',
@@ -141,7 +141,7 @@ const authController = {
       await admin.save();
 
       const data = formatAdmin(admin);
-      data.avatarFullUrl = `${SERVER_URL}${result.url}`;
+      data.avatarFullUrl = result.url.startsWith('http') ? result.url : `${SERVER_URL}${result.url}`;
 
       return sendSuccess(res, data, 'Profile photo updated successfully');
     } catch (err) {

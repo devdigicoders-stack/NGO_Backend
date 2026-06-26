@@ -4,6 +4,9 @@ const { normalizeCategory } = require('../config/upload');
 const { SERVER_URL } = require('../config');
 
 function withFullUrl(result) {
+  if (result.url.startsWith('http://') || result.url.startsWith('https://')) {
+    return { ...result, fullUrl: result.url };
+  }
   return { ...result, fullUrl: `${SERVER_URL}${result.url}` };
 }
 
@@ -18,7 +21,7 @@ const uploadController = {
       const category = normalizeCategory(req.body.category);
 
       if (req.file) {
-        const result = saveImageBuffer({
+        const result = await saveImageBuffer({
           buffer: req.file.buffer,
           category,
           originalName: req.file.originalname,
@@ -33,7 +36,7 @@ const uploadController = {
       }
 
       const { buffer, mimeType } = parseBase64Input(base64Data);
-      const result = saveImageBuffer({
+      const result = await saveImageBuffer({
         buffer,
         category,
         originalName: filename || 'image.jpg',

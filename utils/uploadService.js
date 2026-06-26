@@ -49,22 +49,45 @@ function buildFilename(category, mimeType, originalName) {
   return `${category}_${Date.now()}_${random}${ext}`;
 }
 
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 /**
- * Save image buffer to backend/uploads/{category}/
- * @returns {{ url: string, path: string, filename: string, category: string }}
+ * Save image buffer to Cloudinary
+ * @returns {Promise<{ url: string, path: string, filename: string, category: string }>}
  */
 function saveImageBuffer({ buffer, category = 'general', originalName = 'image.jpg', mimeType }) {
-  const safeCategory = normalizeCategory(category);
-  const validMime = validateBuffer(buffer, mimeType);
-  const filename = buildFilename(safeCategory, validMime, originalName);
-  const dir = path.join(UPLOAD_ROOT, safeCategory);
-  const absolutePath = path.join(dir, filename);
-
-  ensureUploadDirs();
-  fs.writeFileSync(absolutePath, buffer);
-
-  const url = `${PUBLIC_UPLOAD_PATH}/${safeCategory}/${filename}`;
-  return { url, path: absolutePath, filename, category: safeCategory };
+  return new Promise((resolve, reject) => {
+    try {
+      const safeCategory = normalizeCategory(category);
+      validateBuffer(buffer, mimeType);
+      
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: `ngo/${safeCategory}` },
+        (error, result) => {
+          if (error) {
+            console.error('Cloudinary Upload Error:', error);
+            return reject(error);
+          }
+          resolve({ 
+            url: result.secure_url, 
+            path: result.secure_url, 
+            filename: result.public_id, 
+            category: safeCategory 
+          });
+        }
+      );
+      
+      stream.end(buffer);
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
 
 function parseBase64Input(base64Data) {
@@ -77,8 +100,27 @@ function parseBase64Input(base64Data) {
   return { buffer, mimeType };
 }
 
-function deleteFileByUrl(url) {
-  if (!url || !url.startsWith(PUBLIC_UPLOAD_PATH)) return false;
+async function deleteFileByUrl(url) {
+  if (!url) return false;
+  
+  if (url.includes('res.cloudinary.com')) {
+    try {
+      const uploadIndex = url.indexOf('/upload/');
+      if (uploadIndex !== -1) {
+          const afterUpload = url.substring(uploadIndex + 8);
+          const parts = afterUpload.split('/');
+          parts.shift(); // remove version
+          const withoutExt = parts.join('/').replace(/\.[^/.]+$/, "");
+          await cloudinary.uploader.destroy(withoutExt);
+          return true;
+      }
+    } catch (e) {
+      console.error('Cloudinary delete error:', e);
+      return false;
+    }
+  }
+
+  if (!url.startsWith(PUBLIC_UPLOAD_PATH)) return false;
   const relative = url.replace(PUBLIC_UPLOAD_PATH, '').replace(/^\//, '');
   const absolutePath = path.join(UPLOAD_ROOT, relative);
   if (fs.existsSync(absolutePath)) {

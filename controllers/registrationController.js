@@ -38,7 +38,7 @@ const registrationController = {
       if (formData.photo && formData.photo.startsWith('data:image/')) {
         try {
           const { buffer, mimeType } = parseBase64Input(formData.photo);
-          const result = saveImageBuffer({
+          const result = await saveImageBuffer({
             buffer,
             category: 'registrations',
             originalName: 'photo.jpg',
@@ -107,7 +107,7 @@ const registrationController = {
         return sendError(res, 'Screenshot file is required', 400);
       }
 
-      const result = saveImageBuffer({
+      const result = await saveImageBuffer({
         buffer: req.file.buffer,
         category: 'registrations',
         originalName: req.file.originalname || 'screenshot.jpg',
@@ -213,7 +213,7 @@ const registrationController = {
       if (updateData.formData && updateData.formData.photo && updateData.formData.photo.startsWith('data:image/')) {
         try {
           const { buffer, mimeType } = parseBase64Input(updateData.formData.photo);
-          const result = saveImageBuffer({
+          const result = await saveImageBuffer({
             buffer,
             category: 'registrations',
             originalName: 'photo.jpg',
